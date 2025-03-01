@@ -1,4 +1,6 @@
-# Миргасимов и Фролов 15.27В-ПИ12/24м ТВОРЧЕСКИЙ РЕЙТИНГ НС-3
+# Миргасимов и Фролов 
+### 15.27В-ПИ12/24м 
+### ТВОРЧЕСКИЙ РЕЙТИНГ НС-3
 # [Ссылка на Google Colab](https://colab.research.google.com/drive/1HmZOucQqlpSuVmqQRNPA2PGlQg4vK_lE)
 # [Код с комментариями](https://github.com/mirgasimov/HC-3_TR/blob/main/%D0%BC%D0%B8%D1%80%D0%B3%D0%B0%D1%81%D0%B8%D0%BC%D0%BE%D0%B2_%D1%84%D1%80%D0%BE%D0%BB%D0%BE%D0%B2(15_27%D0%B2_%D0%BF%D0%B812_24%D0%BC)_%D1%82%D0%B2%D0%BE%D1%80%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9_%D1%80%D0%B5%D0%B9%D1%82%D0%B8%D0%BD%D0%B3.py)
 ### Было
