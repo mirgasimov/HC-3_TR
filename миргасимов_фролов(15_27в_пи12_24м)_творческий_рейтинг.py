@@ -7,28 +7,25 @@ Original file is located at
     https://colab.research.google.com/drive/1HmZOucQqlpSuVmqQRNPA2PGlQg4vK_lE
 """
 
-# Импорт необходимых библиотек
 import keras  # Библиотека Keras для создания и обучения нейросетей
-from keras.datasets import mnist  # Набор данных MNIST (рукописные цифры 28x28)
-from keras.models import Sequential  # Последовательная модель Keras
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout  # Слои для нейросети
-from tensorflow.keras.preprocessing.image import ImageDataGenerator  # Аугментация изображений
-from keras.optimizers import Adam  # Оптимизатор Adam
-import numpy as np  # Библиотека NumPy для работы с массивами
-import matplotlib.pyplot as plt  # Библиотека для построения графиков
+from keras.datasets import mnist  
+from keras.models import Sequential  
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator 
+from keras.optimizers import Adam  
+import numpy as np  
+import matplotlib.pyplot as plt 
 
-# Загрузка данных MNIST https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz 
 (train_images, train_labels), (test_images, test_labels) = mnist.load_data() 
 
-# Нормализация данных: приведение пикселей (0-255) в диапазон [0,1]
 train_images = train_images.reshape((-1, 28, 28, 1)) / 255.0  # Изменение формы массива и нормализация
 test_images = test_images.reshape((-1, 28, 28, 1)) / 255.0  # То же самое для тестового набора
 
-# Выделение валидационного набора (1000 первых изображений)
-validation_images = train_images[:1000]  # Первые 1000 изображений для валидации
-validation_labels = train_labels[:1000]  # Их соответствующие метки
-train_images = train_images[1000:]  # Остальные данные для обучения
-train_labels = train_labels[1000:]  # Их метки
+
+validation_images = train_images[:1000]   
+validation_labels = train_labels[:1000] 
+train_images = train_images[1000:] 
+train_labels = train_labels[1000:] 
 
 # Создание генератора аугментации изображений
 datagen = ImageDataGenerator(
@@ -45,52 +42,52 @@ model = Sequential([
     MaxPooling2D(2,2),  # Слой подвыборки (уменьшает размерность в 2 раза)
     Conv2D(64, (3,3), activation='relu'),  # Еще один сверточный слой (64 фильтра 3x3)
     MaxPooling2D(2,2),  # Еще один слой подвыборки
-    Flatten(),  # Преобразование многомерных данных в одномерный массив
+    Flatten(),  
     Dense(256, activation='relu', kernel_regularizer=keras.regularizers.l2(0.01)),  # Полносвязный слой (256 нейронов)
     Dropout(0.3),  # Исключение 30% нейронов для предотвращения переобучения
     Dense(128, activation='relu', kernel_regularizer=keras.regularizers.l2(0.01)),  # Еще один полносвязный слой (128 нейронов)
     Dropout(0.3),  # Еще один слой Dropout (30%)
-    Dense(10, activation='softmax')  # Выходной слой (10 классов, softmax для вероятностей)
+    Dense(10, activation='softmax') 
 ])
 
-# Компиляция модели
-model.compile(optimizer=Adam(learning_rate=0.001),  # Оптимизатор Adam с шагом 0.001
-              loss='sparse_categorical_crossentropy',  # Функция потерь (для классов в виде целых чисел)
+
+model.compile(optimizer=Adam(learning_rate=0.001),
+              loss='sparse_categorical_crossentropy',  
               metrics=['accuracy'])  # Метрика точности
 
 # Обучение модели
 history = model.fit(
     datagen.flow(train_images, train_labels, batch_size=128),  # Обучение с использованием аугментации
-    epochs=20,  # Количество эпох
-    validation_data=(validation_images, validation_labels)  # Валидационные данные
+    epochs=20,  
+    validation_data=(validation_images, validation_labels) 
 )
 
-# Оценка точности модели на тестовых данных
-test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)  # Оценка модели
-print('\nТочность на проверочных данных:', test_acc)  # Вывод точности
 
-# Функция для отображения графиков обучения
+test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)  
+print('\nТочность на проверочных данных:', test_acc)
+
+
 def show_loss(history):
-    loss = history.history['loss']  # Потери на тренировке
-    val_loss = history.history['val_loss']  # Потери на валидации
-    epochs = range(1, len(loss) + 1)  # Номера эпох
+    loss = history.history['loss'] 
+    val_loss = history.history['val_loss'] 
+    epochs = range(1, len(loss) + 1)  
 
-    # График потерь
-    plt.plot(epochs, loss, 'bo', label='Training loss')  # Потери на обучающей выборке
-    plt.plot(epochs, val_loss, 'b', label='Validation loss')  # Потери на валидации
-    plt.xlabel('Epochs')  # Подпись оси X
-    plt.ylabel('Loss')  # Подпись оси Y
-    plt.legend(['Train', 'Test'], loc='upper left')  # Легенда
-    plt.show()  # Отобразить график
+    
+    plt.plot(epochs, loss, 'bo', label='Training loss') 
+    plt.plot(epochs, val_loss, 'b', label='Validation loss') 
+    plt.xlabel('Epochs')  
+    plt.ylabel('Loss') 
+    plt.legend(['Train', 'Test'], loc='upper left')  
+    plt.show()  
 
-    # График точности
-    plt.plot(history.history['accuracy'])  # Точность на обучении
-    plt.plot(history.history['val_accuracy'])  # Точность на валидации
-    plt.title('Model accuracy')  # Заголовок
-    plt.ylabel('Accuracy')  # Подпись оси Y
-    plt.xlabel('Epoch')  # Подпись оси X
-    plt.legend(['Train', 'Test'], loc='upper left')  # Легенда
-    plt.show()  # Отобразить график
+   
+    plt.plot(history.history['accuracy'])  
+    plt.plot(history.history['val_accuracy']) 
+    plt.title('Model accuracy')  
+    plt.ylabel('Accuracy')  
+    plt.xlabel('Epoch')  
+    plt.legend(['Train', 'Test'], loc='upper left') 
+    plt.show()
 
-# Вызов функции для отображения графиков
+
 show_loss(history)
