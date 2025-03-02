@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1HmZOucQqlpSuVmqQRNPA2PGlQg4vK_lE
 """
 
-import keras  # Библиотека Keras для создания и обучения нейросетей
+import keras 
 from keras.datasets import mnist  
 from keras.models import Sequential  
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
